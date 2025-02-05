@@ -14,5 +14,6 @@ public class Token
     {
         Text = text;
         Type = type;
+        Position = position;
     }
 }

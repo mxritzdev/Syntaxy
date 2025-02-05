@@ -46,7 +46,7 @@ public class SyntaxHighlighter
                     if (property is SimpleProperty simpleProperty) {
     
                         // Add the matched token
-                        tokens.Add(new Token(match.Value, simpleProperty.Type, match.Index));
+                        tokens.Add(new Token(match.Value, simpleProperty.Type, currentIndex));
                         currentIndex += match.Length;
                         matched = true;
                         break;

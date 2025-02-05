@@ -7,7 +7,7 @@ class Program
     static void Main(string[] args)
     {
         
-        string testCode = "public public using System;\n\nnamespace Example\n{\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            Console.WriteLine(\"Hello, World!\");\n            int number = 42;\n            if (number > 0)\n            {\n                Console.WriteLine(\"Positive number\");\n            }\n        }\n    }\n}\n";
+        string testCode = "using System;\n\nnamespace Example\n{\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            Console.WriteLine(\"Hello, World!\")       }\n    }\n}\n";
         
         var syntaxHighlighter = new SyntaxHighlighter();
         
