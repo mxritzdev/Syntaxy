@@ -2,7 +2,7 @@
 
 public interface ILanguage
 {
-    public string[] GetNames();
+    public LanguageOptions GetConfig(LanguageOptions options);
 
     public List<Property> GetProperties();
 }

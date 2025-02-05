@@ -1,16 +1,12 @@
-﻿namespace Syntaxy.Models;
+﻿using System.Text.RegularExpressions;
+using Syntaxy.Models.Enums;
+
+namespace Syntaxy.Models;
 
 public class Property
 {
-    public string RegexBefore { get; set; } = string.Empty;
-    
+    public TokenType Type { get; set; } = TokenType.PlainText;
     public required string Regex { get; set; }
-    
-    public string RegexAfter { get; set; } = string.Empty;
-    
-    public string Color { get; set; } = string.Empty;
 
-    public bool IsBold { get; set; } = false;
-
-    public bool IsItalic { get; set; } = false;
+    public RegexOptions RegexOptions { get; set; } = RegexOptions.Multiline;
 }
