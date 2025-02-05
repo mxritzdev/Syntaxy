@@ -86,12 +86,6 @@ public class CSharpLanguage : ILanguage
         
         properties.Add(new Property()
         {
-            Regex = "",
-            Type = TokenType.Comment
-        });
-        
-        properties.Add(new Property()
-        {
             Regex = "\\b-?\\b\\d+(\\.\\d+)?(f|F|d|d|u|U|m|M|l|L|ul|UL|lu|LU)?\\b",
             Type = TokenType.Number
         });
