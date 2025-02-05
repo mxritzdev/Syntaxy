@@ -43,7 +43,6 @@ public class SyntaxHighlighter
                 
                 if (match.Success && match.Index == currentIndex)
                 {
-                    
                     if (property is SimpleProperty simpleProperty) {
     
                         // Add the matched token
@@ -54,6 +53,7 @@ public class SyntaxHighlighter
                     } 
                     if (property is AdvancedProperty advancedProperty) {
 
+                        // use advanced processing
                         var processedTokens = advancedProperty.ProcessMatch(match);
 
                         tokens.AddRange(processedTokens);
@@ -67,11 +67,10 @@ public class SyntaxHighlighter
 
             if (!matched)
             {
-                Console.WriteLine("not matched");
-                
                 // Capture unmatched text segment
                 int nextIndex = currentIndex + 1;
 
+                // group whitespace
                 if (char.IsWhiteSpace(code[currentIndex]))
                 {
                     if (tokens.Count > 0 && tokens[^1].Type == TokenType.Whitespace)
@@ -84,6 +83,7 @@ public class SyntaxHighlighter
                     continue;
                 }
                 
+                // group plain text
                 if (tokens.Count > 0 && tokens[^1].Type == TokenType.PlainText)
                     tokens[^1].Text += code[currentIndex];
                 else

@@ -29,16 +29,6 @@ public class CSharpLanguage : ILanguage
             Regex = "\"(.*?)\"",
             Type = TokenType.String
         });
-
-        properties.Add(new AdvancedProperty()
-        {
-            ProcessMatch = x =>
-            [
-                new Token("using", TokenType.Keyword, x.Index),
-            ],
-            Regex = "using\\s(.*?)\\;",
-            
-        });
         
         // Character literals
         properties.Add(new SimpleProperty()
