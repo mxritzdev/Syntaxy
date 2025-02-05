@@ -1,4 +1,5 @@
-﻿using Syntaxy.Models;
+﻿using Syntaxy.Interfaces;
+using Syntaxy.Models;
 using Syntaxy.Models.Enums;
 
 namespace Syntaxy.Languages;
@@ -17,10 +18,10 @@ public class CSharpLanguage : ILanguage
     }
     
 
-    public List<Property> GetProperties()
+    public List<IProperty> GetProperties()
     {
         
-        var properties = new List<Property>();
+        var properties = new List<IProperty>();
 
         // Strings
         properties.Add(new SimpleProperty()
@@ -29,6 +30,16 @@ public class CSharpLanguage : ILanguage
             Type = TokenType.String
         });
 
+        properties.Add(new AdvancedProperty()
+        {
+            ProcessMatch = x =>
+            [
+                new Token("using", TokenType.Keyword, x.Index),
+            ],
+            Regex = "using\\s(.*?)\\;",
+            
+        });
+        
         // Character literals
         properties.Add(new SimpleProperty()
         {

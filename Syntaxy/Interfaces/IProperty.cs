@@ -1,8 +1,11 @@
+using System.Text.RegularExpressions;
+
 namespace Syntaxy.Interfaces;
 
 public interface IProperty {
 
-    public required Regex Regex {get; set; }
+
+    public string Regex { get; set; }
     
     public RegexOptions GetRegexOptions();
 

@@ -1,19 +1,23 @@
-﻿using Syntaxy;
-using Syntaxy.Languages;
+﻿using Syntaxy.Languages;
 
 namespace Syntaxy.Test;
 
-public static class Program {
-
-    public static async Task Main(string[] args) 
+class Program
+{
+    static void Main(string[] args)
     {
+        
+        string testCode = "using System;\n\nnamespace Example\n{\n    class Program\n    {\n        static void Main(string[] args)\n        {\n            Console.WriteLine(\"Hello, World!\");\n            int number = 42;\n            if (number > 0)\n            {\n                Console.WriteLine(\"Positive number\");\n            }\n        }\n    }\n}\n";
+        
+        var syntaxHighlighter = new SyntaxHighlighter();
+        
+        syntaxHighlighter.Languages.Add(new CSharpLanguage());
+        
+        var tokens = syntaxHighlighter.Parse(testCode, "csharp");
 
-        var syntx = new SyntaxHighlighter()
-
-        syntx.Languages.Add(new CSharpLanguage());
-
-        var tokens = syntx.Parse()
-
+        foreach (var token in tokens)
+        {
+            Console.WriteLine($"Text: {token.Text}, Type: {token.Type}, Position: {token.Position}");
+        }
     }
-
 }

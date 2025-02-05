@@ -1,4 +1,6 @@
-﻿namespace Syntaxy.Models;
+﻿using Syntaxy.Interfaces;
+
+namespace Syntaxy.Models;
 
 public interface ILanguage
 {

@@ -52,12 +52,15 @@ public class SyntaxHighlighter
                         matched = true;
                         break;
                     } 
-                    else if (property is AdvancedProperty advancedProperty) {
+                    if (property is AdvancedProperty advancedProperty) {
 
                         var processedTokens = advancedProperty.ProcessMatch(match);
 
                         tokens.AddRange(processedTokens);
-
+                        currentIndex += match.Length;
+                        matched = true;
+                        break;
+                        
                     }
                 }                
             }
