@@ -37,17 +37,29 @@ public class SyntaxHighlighter
             
             foreach (var property in lang.GetProperties())
             {
-                var regex = new Regex(property.Regex, RegexOptions.Multiline);
+                var regex = new Regex(property.Regex, property.GetRegexOptions());
+                
                 var match = regex.Match(code, currentIndex);
-
+                
                 if (match.Success && match.Index == currentIndex)
                 {
-                    // Add the matched token
-                    tokens.Add(new Token(match.Value, property.Type, match.Index));
-                    currentIndex += match.Length;
-                    matched = true;
-                    break;
-                }
+                    
+                    if (property is SimpleProperty simpleProperty) {
+    
+                        // Add the matched token
+                        tokens.Add(new Token(match.Value, simpleProperty.Type, match.Index));
+                        currentIndex += match.Length;
+                        matched = true;
+                        break;
+                    } 
+                    else if (property is AdvancedProperty advancedProperty) {
+
+                        var processedTokens = advancedProperty.ProcessMatch(match);
+
+                        tokens.AddRange(processedTokens);
+
+                    }
+                }                
             }
 
             if (!matched)
