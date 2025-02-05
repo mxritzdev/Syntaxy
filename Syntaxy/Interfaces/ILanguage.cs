@@ -4,5 +4,5 @@ public interface ILanguage
 {
     public LanguageOptions GetConfig(LanguageOptions options);
 
-    public List<Property> GetProperties();
+    public List<IProperty> GetProperties();
 }
