@@ -1,8 +1,10 @@
-﻿namespace Syntaxy.Models;
+﻿using Syntaxy.Interfaces;
+
+namespace Syntaxy.Models;
 
 public interface ILanguage
 {
-    public string[] GetNames();
+    public LanguageOptions GetConfig(LanguageOptions options);
 
-    public List<Property> GetProperties();
+    public List<IProperty> GetProperties();
 }
