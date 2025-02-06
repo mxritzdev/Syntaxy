@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using Syntaxy.Models;
 using Syntaxy.Models.Enums;
+using Syntaxy.Models.Parsing;
 
 namespace Syntaxy;
 
@@ -10,21 +11,22 @@ public class SyntaxHighlighter
 {
     public List<ILanguage> Languages { get; set; } = new List<ILanguage>();
 
-    public Task<List<Token>>  ParseAsync(string code, string language)
+    public Task<CodeDocument>  ParseAsync(string code, string language)
     {
         return Task.FromResult(Parse(code, language));
     }
     
-    public List<Token> Parse(string code, string language)
+    public CodeDocument Parse(string code, string language)
     {
-        List<Token> tokens = new List<Token>();
+        var document = new CodeDocument();
+        
 
         ILanguage? lang = Languages.FirstOrDefault(l => l.GetConfig(new LanguageOptions()).Names.Contains(language));
         
         if (lang == null) {
-            tokens.Add(new Token(code, TokenType.PlainText, 0));
+            document.Tokens.Add(new Token(code, TokenType.PlainText, 0));
             
-            return tokens;
+            return document;
         }
         
         int currentIndex = 0;
@@ -46,7 +48,7 @@ public class SyntaxHighlighter
                     if (property is SimpleProperty simpleProperty) {
     
                         // Add the matched token
-                        tokens.Add(new Token(match.Value, simpleProperty.Type, currentIndex));
+                        document.Tokens.Add(new Token(match.Value, simpleProperty.Type, currentIndex));
                         currentIndex += match.Length;
                         matched = true;
                         break;
@@ -56,7 +58,7 @@ public class SyntaxHighlighter
                         // use advanced processing
                         var processedTokens = advancedProperty.ProcessMatch(match);
 
-                        tokens.AddRange(processedTokens);
+                        document.Tokens.AddRange(processedTokens);
                         currentIndex += match.Length;
                         matched = true;
                         break;
@@ -73,10 +75,10 @@ public class SyntaxHighlighter
                 // group whitespace
                 if (char.IsWhiteSpace(code[currentIndex]))
                 {
-                    if (tokens.Count > 0 && tokens[^1].Type == TokenType.Whitespace)
-                        tokens[^1].Text += code[currentIndex];
+                    if (document.Tokens.Count > 0 && document.Tokens[^1].Type == TokenType.Whitespace)
+                        document.Tokens[^1].Text += code[currentIndex];
                     else
-                        tokens.Add(new Token(code[currentIndex].ToString(), TokenType.Whitespace, currentIndex));
+                        document.Tokens.Add(new Token(code[currentIndex].ToString(), TokenType.Whitespace, currentIndex));
                     
                     currentIndex = nextIndex;
                     
@@ -84,38 +86,16 @@ public class SyntaxHighlighter
                 }
                 
                 // group plain text
-                if (tokens.Count > 0 && tokens[^1].Type == TokenType.PlainText)
-                    tokens[^1].Text += code[currentIndex];
+                if (document.Tokens.Count > 0 && document.Tokens[^1].Type == TokenType.PlainText)
+                    document.Tokens[^1].Text += code[currentIndex];
                 else
-                    tokens.Add(new Token(code.Substring(currentIndex, 1), TokenType.PlainText, currentIndex));
+                    document.Tokens.Add(new Token(code.Substring(currentIndex, 1), TokenType.PlainText, currentIndex));
             
                 
                 currentIndex = nextIndex;
             }
         }
 
-        return tokens;
-
-
-        /*StringBuilder text = new StringBuilder(code);
-
-        foreach (var property in lang.GetProperties())
-        {
-            var regex = new Regex(property.Regex);
-
-            var matches = regex.Matches(text.ToString()).Cast<Match>().OrderByDescending(m => m.Index).ToList();
-
-            foreach (Match match in matches)
-            {
-                string replacement = $"<span style=\"color: {property};\">{match.Value}</span>";
-                text.Remove(match.Index, match.Length);
-                text.Insert(match.Index, replacement);
-
-                Console.WriteLine(match.Value);
-            }
-        }
-
-
-        return text.ToString();*/
+        return document;
     }
 }

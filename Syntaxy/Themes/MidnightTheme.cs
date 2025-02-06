@@ -1,22 +1,55 @@
 ﻿using System.Drawing;
 using Syntaxy.Models;
+using Syntaxy.Models.Enums;
+using Syntaxy.Models.Parsing.Style;
 
 namespace Syntaxy;
 
 public class MidnightTheme : ITheme
 {
-    public ColorPalette GetColorPalette()
+    public ColorPalette ColorPalette { get; set; }
+
+    public void ConfigureColorPalette()
     {
-        var palette = new ColorPalette();
+        ColorPalette = new ColorPalette
+        {
+            Base00 = new TokenStyle { Color = Color.FromArgb(0, 43, 54) },
+            Base01 = new TokenStyle { Color = Color.FromArgb(7, 54, 66) },
+            Base02 = new TokenStyle { Color = Color.FromArgb(88, 110, 117) },
+            Base03 = new TokenStyle { Color = Color.FromArgb(101, 123, 131) },
+            Base04 = new TokenStyle { Color = Color.FromArgb(131, 148, 150) },
+            Base05 = new TokenStyle { Color = Color.FromArgb(147, 161, 161) },
+            Base06 = new TokenStyle { Color = Color.FromArgb(238, 232, 213) },
+            Base07 = new TokenStyle { Color = Color.FromArgb(253, 246, 227) },
+            Yellow = new TokenStyle { Color = Color.FromArgb(181, 137, 0) },
+            Orange = new TokenStyle { Color = Color.FromArgb(203, 75, 22) },
+            Red = new TokenStyle { Color = Color.FromArgb(220, 50, 47) },
+            Magenta = new TokenStyle { Color = Color.FromArgb(211, 54, 130) },
+            Violet = new TokenStyle { Color = Color.FromArgb(108, 113, 196) },
+            Blue = new TokenStyle { Color = Color.FromArgb(38, 139, 210) },
+            Cyan = new TokenStyle { Color = Color.FromArgb(42, 161, 152) },
+            Green = new TokenStyle { Color = Color.FromArgb(133, 153, 0) }
+        };
+    }
 
-        palette.Primary = Color.FromArgb(0, 0, 255); // Keywords
-        palette.Glow = Color.FromArgb(196, 137, 10); // Strings
-        palette.Tone = Color.FromArgb(9, 158, 27); // Comments
-        palette.Harmony = Color.FromArgb(12, 170, 176); // Identifiers
-        palette.Accent = Color.FromArgb(94, 12, 176); // Numbers
-        palette.Highlight = Color.FromArgb(153, 235, 240); // Operators
-        palette.Base = Color.FromArgb(240, 247, 247); // Plain Text
+    public TokenStyle? GetAssociatedStyle(ColorPalette palette, TokenType type)
+    {
+        
+        var tokenColors = new Dictionary<TokenType, TokenStyle?>
+        {
+            { TokenType.Keyword, ColorPalette.Yellow },
+            { TokenType.Datatype, ColorPalette.Blue },
+            { TokenType.String, ColorPalette.Green },
+            { TokenType.Comment, ColorPalette.Base03 },
+            { TokenType.Identifier, ColorPalette.Base05 },
+            { TokenType.Number, ColorPalette.Red },
+            { TokenType.Operator, ColorPalette.Orange },
+            { TokenType.Whitespace, ColorPalette.Base00 },
+            { TokenType.Annotation, ColorPalette.Magenta },
+            { TokenType.PlainText, ColorPalette.Base07 },
+        };
 
-        return palette;
+        return tokenColors.TryGetValue(type, out TokenStyle? color) ? color : ColorPalette.Base07;
+
     }
 }

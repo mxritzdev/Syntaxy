@@ -1,14 +1,15 @@
 ﻿using Syntaxy.Models.Enums;
+using Syntaxy.Models.Parsing.Style;
 
-namespace Syntaxy.Models;
+namespace Syntaxy.Models.Parsing;
 
 public class Token
 {
-    public string Text { get; set; }
+    public string Text;
 
-    public TokenType Type { get; set; }
-    
-    public int Position { get; set; }
+    public readonly TokenType Type;
+
+    public readonly int Position;
     
     public Token(string text, TokenType type, int position)
     {
