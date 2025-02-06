@@ -29,7 +29,7 @@ Here's how you can get started:
 2. **Clone Your Fork:**
   - Clone the forked repository to your local machine:
     ```bash
-    git clone https://github.com/mxritzdev/syntaxy.git
+    git clone https://github.com/your-username/syntaxy.git
     ```
 
 3. **Create a New Branch:**
