@@ -13,9 +13,9 @@ class Program
         
         syntaxHighlighter.Languages.Add(new CSharpLanguage());
         
-        var tokens = syntaxHighlighter.Parse(testCode, "csharp");
+        var document = syntaxHighlighter.Parse(testCode, "csharp");
 
-        foreach (var token in tokens)
+        foreach (var token in document.Tokens)
         {
             Console.WriteLine($"Text: {token.Text}, Type: {token.Type}, Position: {token.Position}");
         }
