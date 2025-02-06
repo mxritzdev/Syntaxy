@@ -32,24 +32,29 @@ public class MidnightTheme : ITheme
         };
     }
 
-    public TokenStyle? GetAssociatedStyle(ColorPalette palette, TokenType type)
+    public Func<ColorPalette, TokenStyle> GetAssociatedStyle(TokenType type)
     {
         
-        var tokenColors = new Dictionary<TokenType, TokenStyle?>
+        var tokenColors = new Dictionary<TokenType, Func<ColorPalette, TokenStyle>>
         {
-            { TokenType.Keyword, ColorPalette.Yellow },
-            { TokenType.Datatype, ColorPalette.Blue },
-            { TokenType.String, ColorPalette.Green },
-            { TokenType.Comment, ColorPalette.Base03 },
-            { TokenType.Identifier, ColorPalette.Base05 },
-            { TokenType.Number, ColorPalette.Red },
-            { TokenType.Operator, ColorPalette.Orange },
-            { TokenType.Whitespace, ColorPalette.Base00 },
-            { TokenType.Annotation, ColorPalette.Magenta },
-            { TokenType.PlainText, ColorPalette.Base07 },
+            { TokenType.Keyword, x => x.Yellow },
+            { TokenType.Datatype, x => x.Blue },
+            { TokenType.String, x => x.Green },
+            { TokenType.Comment, x => x.Base03 },
+            { TokenType.Identifier, x => x.Base05 },
+            { TokenType.Number, x => x.Red },
+            { TokenType.Operator, x => x.Orange },
+            { TokenType.Whitespace, x => x.Base00 },
+            { TokenType.Annotation, x => x.Magenta },
+            { TokenType.PlainText, x => x.Base07 },
         };
 
-        return tokenColors.TryGetValue(type, out TokenStyle? color) ? color : ColorPalette.Base07;
+        if (tokenColors.TryGetValue(type, out var func))
+        {
+            return func;
+        }
+        
+        return x => x.Base07;
 
     }
 }

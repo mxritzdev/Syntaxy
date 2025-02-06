@@ -9,6 +9,6 @@ public interface ITheme
     
     public void ConfigureColorPalette();
 
-    public TokenStyle? GetAssociatedStyle(ColorPalette palette, TokenType type);
+    public Func<ColorPalette, TokenStyle> GetAssociatedStyle(TokenType type);
 
 }
